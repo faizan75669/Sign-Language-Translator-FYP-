@@ -31,8 +31,12 @@ internet. We wanted one that is cheap enough for people in Pakistan and works of
 
 <p align="center">
   <img src="media/glove_sensors_labelled.jpg" width="440" alt="Glove with contact sensors, flex sensors, IMU and controller labelled"><br>
-  <em>Where the sensors are on the glove.</em>
+  <em>Where the sensors are on the glove. This photo is from the first version, on an ESP32.</em>
 </p>
+
+**ESP32 first, then the Pi Zero 2W:** we did the first data collection and testing with an
+**ESP32** on the glove (the photo above). Once the model was trained and working, we moved it
+onto the **Raspberry Pi Zero 2W**, so the whole recognition now runs on the glove itself.
 
 | Part | What it does |
 |---|---|
@@ -99,6 +103,12 @@ person and not only for us.
 For static signs (the hand holds one shape), we used a **Support Vector Machine (SVM) with an
 RBF kernel**.
 
+<p align="center">
+  <img src="media/asl_alphabet_chart.jpg" width="520" alt="ASL alphabet chart"><br>
+  <em>The ASL alphabet. Most letters are one held hand shape. J and Z are drawn in the air,
+  so they are moving signs (see the LSTM part below).</em>
+</p>
+
 The main problem in ASL is that many signs look almost the same. **U, V and R** are all
 index and middle finger up with the other fingers down; the difference is whether the fingers are
 together, apart or crossed. For the sensors, these give very similar numbers, and they can't
@@ -130,9 +140,13 @@ prediction is fast and deterministic, which matters on the Pi Zero.
 Some signs give almost the same finger bends and hand angle; the only difference is which
 fingers touch each other:
 
-- **U and V**: index and middle together (U) or apart (V)
+- **U, V and R**: the same two fingers up, together (U), apart (V) or crossed (R)
 - **A and E**: where the thumb sits against the fingers and palm
-- **M, N and T**: where the thumb is tucked between the fingers
+- **M, N and T**: all closed fists, the only difference is where the thumb is tucked between the fingers
+
+| U, V and R | M, N and T |
+|---|---|
+| ![U V R signs](media/asl_u_v_r.png) | ![M N T signs](media/asl_m_n_t.png) |
 
 Flex sensors and the IMU can't see this difference, so we added the **4 contact sensors**
 (index-middle, middle-ring, ring-pinkie, thumb-palm). They give the classifier the extra
