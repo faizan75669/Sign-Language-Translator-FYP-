@@ -98,6 +98,10 @@ university volunteered** to wear the glove and record the static ASL signs. Diff
 sizes and different ways of making the same sign is what makes the model work for a new
 person and not only for us.
 
+In total we recorded **about 500 samples of each static letter**, spread across the 10
+volunteers. Part of this was kept aside as a test set and never used in training; the results
+below are on that test set.
+
 ## Static signs: SVM
 
 For static signs (the hand holds one shape), we used a **Support Vector Machine (SVM) with an
@@ -162,7 +166,7 @@ and only speaks when the user makes a valid sign.
 
 ### Results
 
-On our test set (1677 samples), the SVM got **98.9% accuracy**, with a macro F1 of 0.99:
+On the held-out test set (1677 samples, about 93 per letter), the SVM got **98.9% accuracy**, with a macro F1 of 0.99:
 
 | Classification report | Confusion matrix |
 |---|---|
