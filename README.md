@@ -172,6 +172,14 @@ The mistakes left are the ones you would expect. **U is sometimes read as K** (8
 because K is also index and middle up, and **T is sometimes read as A or M**, because all
 three have the thumb near a closed fist. Everything else is almost perfectly on the diagonal.
 
+**What this test does and does not show:**
+- It covers the **18 static letters** in the matrix above. The remaining static letters
+  (G, H, P, Q, R, V) and the "no gesture" class are not part of this report.
+- The test set is held out from the recordings of our 10 volunteers. It is not a test on a
+  person the model has never seen, and accuracy on a completely new user is usually
+  lower. The next evaluation we want to run is **leave-one-person-out**: train on 9
+  volunteers, test on the 10th, and repeat for every volunteer.
+
 ## Moving signs: LSTM (future work)
 
 Some signs are not one hand shape but a movement (for example, J and Z in the alphabet, and
@@ -180,10 +188,13 @@ we designed an **LSTM** network. At each time step it takes a 12-value input (5 
 and the 3 gyro rates), sampled at 60–80 Hz. The LSTM's last hidden state then goes to a softmax
 layer that picks the sign.
 
-**Why LSTM and not a 1D CNN:** a 1D CNN only looks at short windows of time, so it learns
-local patterns. A moving sign lasts about 90 to 160 frames, and what matters is the whole
-movement from start to end. The LSTM keeps a memory through the whole sequence, and its
-gates let it decide what to remember and what to forget.
+**Why LSTM and not a 1D CNN:** each layer of a 1D CNN looks at a short window of time, so
+to see a whole sign it needs several stacked layers (or dilated convolutions). A moving sign
+lasts about 90 to 160 frames, and what matters is the whole movement from start to end. A
+single small LSTM layer keeps a memory through the whole sequence, and its gates let it
+decide what to remember and what to forget. For our sequence lengths and a small dataset, that
+seemed the simpler choice. A 1D CNN can also work well on sequences like this, so once
+we have the NGO data we want to compare the two on the same data.
 
 **Why not a normal classifier (SVM or a feedforward network):** these need a fixed-size
 input with no notion of order. A moving sign is a sequence, its length changes from person to
